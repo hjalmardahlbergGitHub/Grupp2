@@ -9,6 +9,7 @@ function Quiz() {
   const [error, setError] = useState('')
   const [points, setPoints] = useState(0)
   const [isGameFinished, setIsGameFinished] = useState(false)
+  const [highscore, setHighscore] = useState(0)
 
   const fetchQuestions = async () => {
     setIsLoading(true)
@@ -37,10 +38,19 @@ function Quiz() {
     }
   }
 
+  useEffect(() => {
+    const cookies = document.cookie
+    let ca = cookies.split('=');
+    setHighscore(parseInt(ca[1]))
+    
+  },[])
+
 
   const checkCorrectAnswer = (answerText, correctAnswer) => {
     if (answerText !== correctAnswer) {
       setIsGameFinished(true)
+      const highscore = document.getElementById('points')
+      points > highscore && (document.cookie = `points=${points}`)
       return
     }
 
@@ -49,7 +59,6 @@ function Quiz() {
       return
     }
     setPoints(points + 1)
-
     setCurrentQuestionIndex((index) => index + 1)
   }
 
@@ -57,14 +66,16 @@ function Quiz() {
 
   const restartGame = () => {
     window.location.reload()
-
   }
+
+
 
   return (
     <>
     {!isGameFinished &&
     (<div>
       <h1>Quiz</h1>
+      <h2>Highscore: {highscore}</h2>
       <h3>You have {points} points</h3>
     </div>)}
       
