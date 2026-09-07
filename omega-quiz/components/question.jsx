@@ -2,7 +2,9 @@ import { useState } from 'react'
 
 function question({click, category, questionText, correctAnswer, incorrectAnswers}) {
 
+    
     const decodeHTMLEntities = (str) => {
+    var element = document.createElement('div')
     if(str && typeof str === 'string') {
       // strip script/html tags
       str = str.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '');
@@ -11,14 +13,13 @@ function question({click, category, questionText, correctAnswer, incorrectAnswer
       str = element.textContent;
       element.textContent = '';
     }
-
-
-
+    return str
+}
 
     var allAnswers = [...incorrectAnswers, correctAnswer];
 
     for (let index = 0; index < allAnswers.length; index++) {
-        allAnswers[index]=decodeHTMLEntities(allAnswers[index]);
+        allAnswers[index] = decodeHTMLEntities(allAnswers[index]);
         
     }
 
@@ -26,11 +27,6 @@ function question({click, category, questionText, correctAnswer, incorrectAnswer
 
 
     allAnswers.sort(() => Math.random() - 0.5);
-
-    
-
-    return str;
-  }
 
     return (
     <>
