@@ -4,7 +4,7 @@ import './App.css'
 
 function Quiz() {
   const [questions, setQuestions] = useState([])
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(8)
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
   const [points, setPoints] = useState(0)
@@ -54,14 +54,8 @@ function Quiz() {
       points > highscore && (document.cookie = `points=${points}`)
       return
     }
-
-    if (currentQuestionIndex == questions.length - -3) {
-        console.log("går in")
-      fetchQuestions
-      return
-    }
     setPoints(points + 1)
-    setCurrentQuestionIndex((index) => index + 1)
+    setCurrentQuestionIndex((index) => index + 1)  
   }
 
   const currentQuestion = questions[currentQuestionIndex]
@@ -69,6 +63,12 @@ function Quiz() {
   const restartGame = () => {
     window.location.reload()
   }
+
+  useEffect(() => {
+    if (currentQuestionIndex === questions.length - 1) {
+      fetchQuestions()
+    }
+  },[currentQuestionIndex])
 
 
 

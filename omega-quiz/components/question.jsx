@@ -12,7 +12,6 @@ function question({click, category, questionText, correctAnswer, incorrectAnswer
         <p>{questionText}</p>
         <ul>
             {allAnswers.map((answer,index) => (<button key={index} onClick={() => click(answer, right_answer)}>{answer}</button>))}
-            <p>{correctAnswer}</p>
         </ul>
 
     </>
