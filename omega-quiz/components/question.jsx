@@ -6,7 +6,6 @@ function question({click, category, questionText, correctAnswer, incorrectAnswer
     const decodeHTMLEntities = (str) => {
     var element = document.createElement('div')
     if(str && typeof str === 'string') {
-      // strip script/html tags
       str = str.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '');
       str = str.replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '');
       element.innerHTML = str;
