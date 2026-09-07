@@ -16,24 +16,25 @@ function question({click, category, questionText, correctAnswer, incorrectAnswer
     return str
 }
 
-    var allAnswers = [...incorrectAnswers, correctAnswer];
+    const allAnswers = useMemo(() => {
+        const answers = [...incorrectAnswers, correctAnswer].map(decodeHTMLEntities)
 
-    for (let index = 0; index < allAnswers.length; index++) {
-        allAnswers[index] = decodeHTMLEntities(allAnswers[index]);
-        
-    }
+        for (let index = answers.length - 1; index > 0; index--) {
+            const randomIndex = Math.floor(Math.random() * (index + 1))
+            ;[answers[index], answers[randomIndex]] = [answers[randomIndex], answers[index]]
+        }
 
-    const right_answer = correctAnswer;
+        return answers
+    }, [incorrectAnswers, correctAnswer])
 
-
-    allAnswers.sort(() => Math.random() - 0.5);
+    const right_answer = decodeHTMLEntities(correctAnswer)
 
     return (
     <>
         <h2>{decodeHTMLEntities(category)}</h2>
         <p>{decodeHTMLEntities(questionText)}</p>
-        <ul>
-            {allAnswers.map((answer,index) => (<button key={index} onClick={() => click(answer, right_answer)}>{answer}</button>))}
+        <ul className='answer-div'>
+            {allAnswers.map((answer,index) => (<button className='answer-btn' key={index} onClick={() => click(answer, right_answer)}>{answer}</button>))}
         </ul>
 
     </>

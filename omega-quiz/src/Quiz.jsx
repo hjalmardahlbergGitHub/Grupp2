@@ -31,6 +31,7 @@ function Quiz() {
     }, 1000)
     return () => clearInterval(interval)
   }, [hasStarted, isGameFinished])
+
   const [highscore, setHighscore] = useState(0)
 
   const fetchQuestions = async () => {
@@ -131,7 +132,7 @@ function Quiz() {
       
       
       {isGameFinished && (
-        <div>
+        <div className='game-over-div'>
         <h2>Game Over</h2>
         <p>You got {points} points</p>
         <button onClick={restartGame}>Restart</button>
