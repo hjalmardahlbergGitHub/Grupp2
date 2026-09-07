@@ -7,6 +7,8 @@ function Quiz() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
+  const [points, setPoints] = useState(0)
+  const [isGameFinished, setIsGameFinished] = useState(false)
 
   const fetchQuestions = async () => {
     setIsLoading(true)
@@ -45,26 +47,35 @@ function Quiz() {
       fetchQuestions()
       return
     }
+    setPoints(points + 1)
 
     setCurrentQuestionIndex((index) => index + 1)
   }
 
   const currentQuestion = questions[currentQuestionIndex]
 
+  const restartGame = () => {
+    window.location.reload()
+
+  }
+
   return (
     <>
+    {!isGameFinished &&
+    (<div>
       <h1>Quiz</h1>
-
-      {isLoading && <p>Hämtar frågor...</p>}
-
-      {!isLoading && error && (
+      <h3>You have {points} points</h3>
+    </div>)}
+      
+    
+       {!isLoading && error && !isGameFinished &&(
         <>
           <p>{error}</p>
           <button onClick={fetchQuestions}>Försök igen</button>
         </>
       )}
 
-      {!isLoading && !error && currentQuestion && (
+      {!isLoading && !error && currentQuestion && !isGameFinished && (
         <Question
           click={checkCorrectAnswer}
           category={currentQuestion.category}
@@ -74,9 +85,15 @@ function Quiz() {
         />
       )}
 
-      {isLoading && (
-        <button onClick={fetchQuestions}>Hämta nya frågor</button>
+      {isLoading && !isGameFinished && (
+        <button onClick={fetchQuestions}>Starta quizet</button>
       )}
+
+      {isGameFinished} && (
+        <h2>Game Over</h2>
+        <p>You got {points} points</p>
+        <button onClick={restartGame}>Restart</button>
+      )
     </>
   )
 }
