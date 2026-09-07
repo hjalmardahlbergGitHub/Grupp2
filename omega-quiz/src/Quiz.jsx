@@ -4,7 +4,7 @@ import './App.css'
 
 function Quiz() {
   const [questions, setQuestions] = useState([])
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(8)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
   const [points, setPoints] = useState(0)
@@ -12,6 +12,7 @@ function Quiz() {
   const [highscore, setHighscore] = useState(0)
 
   const fetchQuestions = async () => {
+    console.log("HÄMTAR")
     setIsLoading(true)
     setError('')
 
@@ -54,8 +55,9 @@ function Quiz() {
       return
     }
 
-    if (currentQuestionIndex === questions.length - 1) {
-      fetchQuestions()
+    if (currentQuestionIndex == questions.length - -3) {
+        console.log("går in")
+      fetchQuestions
       return
     }
     setPoints(points + 1)
