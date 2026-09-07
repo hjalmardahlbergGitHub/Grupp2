@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo } from 'react'
 
 function question({click, category, questionText, correctAnswer, incorrectAnswers}) {
 
