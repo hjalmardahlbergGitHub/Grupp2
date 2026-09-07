@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import Question from '../components/question.jsx'
 import './App.css'
+import moment from 'moment'
 
 function Quiz() {
   const [questions, setQuestions] = useState([])
@@ -9,6 +10,27 @@ function Quiz() {
   const [error, setError] = useState('')
   const [points, setPoints] = useState(0)
   const [isGameFinished, setIsGameFinished] = useState(false)
+  const [hasStarted, setHasStarted] = useState(false)
+  const [timeLeft, setTimeLeft] = useState(moment.duration(5, 'minutes'))
+
+  useEffect(() => {
+    if (!hasStarted || isGameFinished) {
+      return
+    }
+
+    const interval = setInterval(() => {
+      setTimeLeft((prev) => {
+        const secondsLeft = prev.asSeconds() - 1
+        if (secondsLeft <= 0) {
+          clearInterval(interval)
+          setIsGameFinished(true)
+          return moment.duration(0, 'seconds')
+        }
+        return moment.duration(secondsLeft, 'seconds')
+      })
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [hasStarted, isGameFinished])
 
   const fetchQuestions = async () => {
     setIsLoading(true)
@@ -34,6 +56,7 @@ function Quiz() {
       setError('Kunde inte hämta frågor.')
     } finally {
       setIsLoading(false)
+      setHasStarted(true)
     }
   }
 
@@ -66,6 +89,9 @@ function Quiz() {
     (<div>
       <h1>Quiz</h1>
       <h3>You have {points} points</h3>
+      {hasStarted && (
+        <h3>Time left: {String(timeLeft.minutes()).padStart(2, '0')}:{String(timeLeft.seconds()).padStart(2, '0')}</h3>
+      )}
     </div>)}
       
     
@@ -75,7 +101,7 @@ function Quiz() {
           <button onClick={fetchQuestions}>Försök igen</button>
         </>
       )}
-
+    
       {!isLoading && !error && currentQuestion && !isGameFinished && (
         <Question
           click={checkCorrectAnswer}
@@ -89,7 +115,8 @@ function Quiz() {
       {isLoading && !isGameFinished && (
         <button onClick={fetchQuestions}>Starta quizet</button>
       )}
-
+      
+      
       {isGameFinished && (
         <div>
         <h2>Game Over</h2>
