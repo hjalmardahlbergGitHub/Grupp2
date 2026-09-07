@@ -40,6 +40,7 @@ function Quiz() {
 
   const checkCorrectAnswer = (answerText, correctAnswer) => {
     if (answerText !== correctAnswer) {
+      setIsGameFinished(true)
       return
     }
 
@@ -89,11 +90,13 @@ function Quiz() {
         <button onClick={fetchQuestions}>Starta quizet</button>
       )}
 
-      {isGameFinished} && (
+      {isGameFinished && (
+        <div>
         <h2>Game Over</h2>
         <p>You got {points} points</p>
         <button onClick={restartGame}>Restart</button>
-      )
+        </div>
+      )}
     </>
   )
 }
