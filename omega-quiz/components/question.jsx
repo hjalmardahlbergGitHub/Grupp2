@@ -1,11 +1,9 @@
 import { useState } from 'react'
 
-function question({category, questionText, correctAnswer, incorrectAnswers}) {
+function question({click, category, questionText, correctAnswer, incorrectAnswers}) {
     var allAnswers = [...incorrectAnswers, correctAnswer];
     const right_answer = correctAnswer;
     allAnswers.sort(() => Math.random() - 0.5);
-
-
 
 
     return (
@@ -13,7 +11,7 @@ function question({category, questionText, correctAnswer, incorrectAnswers}) {
         <h2>{category}</h2>
         <p>{questionText}</p>
         <ul>
-            {allAnswers.map((answer,index) => (<button key={index} onClick={() => console.log(answer === right_answer ? 'Correct!' : 'Incorrect!')}>{answer}</button>))}
+            {allAnswers.map((answer,index) => (<button key={index} onClick={() => click(answer, right_answer)}>{answer}</button>))}
         </ul>
 
     </>
